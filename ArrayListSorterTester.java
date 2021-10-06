@@ -7,6 +7,10 @@ import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+/**
+ * @author DeAngelo Phlippeau & Terence Hirsch
+ * Tests the ArrayListSorter Class
+ */
 
 public class ArrayListSorterTester {
 	
@@ -34,6 +38,8 @@ public class ArrayListSorterTester {
 	ArrayList<String> ascendingThousandString = new ArrayList<String>();
 	ArrayList<String> descendingThousandString = new ArrayList<String>();
 	ArrayList<String> permutedThousandString = new ArrayList<String>();
+	ArrayList<String> oneString = new ArrayList<String>();
+	ArrayList<Integer> oneInt = new ArrayList<Integer>();
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -81,9 +87,11 @@ public class ArrayListSorterTester {
 		}
 		Collections.shuffle(permutedThousandString);
 	
-		
 	intArray = ArrayListSorter.generatePermuted(10);
 	intArraySorted = ArrayListSorter.generateAscending(10);
+	
+	oneString.add("Hello");
+	oneInt.add(42);
 	}
 	//Test Generate methods
 	
@@ -96,7 +104,6 @@ public class ArrayListSorterTester {
 				fail();
 		assertTrue(true);
 	}
-
 	@Test
 	void generateDescendingTest()
 	{
@@ -106,7 +113,6 @@ public class ArrayListSorterTester {
 				fail();
 		assertTrue(true);
 	}
-	
 	@Test 
 	void generatePermutedTest() {
 		ArrayList<Integer> list = ArrayListSorter.generatePermuted(1000);
@@ -116,24 +122,137 @@ public class ArrayListSorterTester {
 		}
 		assertTrue(true);
 	}
-	
 	//Test with one element
-	
+	@Test 
+	void testMergeSortFives() {
+		ArrayListSorter.mergesort(thousandFives);
+		assertArrayEquals(thousandFives2.toArray(), thousandFives.toArray());
+	}
+	@Test 
+	void testQuickSortFives() {
+		ArrayListSorter.quicksort(thousandFives);
+		assertArrayEquals(thousandFives2.toArray(), thousandFives.toArray());
+	}
+	@Test
+	void testMergeSortFivesString() {
+		ArrayListSorter.mergesort(thousandFivesString);
+		assertArrayEquals(thousandFivesString2.toArray(), thousandFivesString.toArray());
+	}
+	@Test
+	void testQuickSortFivesString() {
+		ArrayListSorter.quicksort(thousandFivesString);
+		assertArrayEquals(thousandFivesString2.toArray(), thousandFivesString.toArray());
+	}
+	@Test 
+	void testMergeSortOne() {
+		ArrayListSorter.mergesort(oneInt);
+		assertEquals(42, oneInt.get(0));
+	}
+	@Test 
+	void testQuickSortOne() {
+		ArrayListSorter.quicksort(oneInt);
+		assertEquals(42, oneInt.get(0));
+	}
+	@Test
+	void testMergeSortOneString() {
+		ArrayListSorter.mergesort(oneString);
+		assertEquals("Hello", oneString.get(0));
+	}
+	@Test
+	void testQuickSortOneString() {
+		ArrayListSorter.quicksort(oneString);
+		assertEquals("Hello", oneString.get(0));
+	}
 	//Test Empty Arrays
-	
+	@Test
+	void testMergeSortEmpty() {
+		ArrayListSorter.mergesort(empty);
+		assertArrayEquals(empty2.toArray(), empty.toArray());
+	}
+	@Test
+	void testQuickSortEmpty() {
+		ArrayListSorter.quicksort(empty);
+		assertArrayEquals(empty2.toArray(), empty.toArray());
+	}
+	@Test
+	void testMergeSortEmptyString() {
+		ArrayListSorter.mergesort(emptyString);
+		assertArrayEquals(emptyString2.toArray(), emptyString.toArray());
+	}
+	@Test
+	void testQuickSortStringEmpty() {
+		ArrayListSorter.quicksort(emptyString);
+		assertArrayEquals(emptyString2.toArray(), emptyString.toArray());
+	}
 	//Test with ints
+	@Test
+	void mergeSortTestDecending() {
+		ArrayListSorter.mergesort(descendingHundred);
+		assertArrayEquals(ascendingHundred.toArray(), descendingHundred.toArray());
+		
+		ArrayListSorter.mergesort(descendingThousand);
+		assertArrayEquals(ascendingThousand.toArray(), descendingThousand.toArray());	
+	}
+	@Test
+	void quickSortTestDecending() {
+		ArrayListSorter.quicksort(descendingHundred);
+		assertArrayEquals(ascendingHundred.toArray(), descendingHundred.toArray());
+		
+		ArrayListSorter.quicksort(descendingThousand);
+		assertArrayEquals(ascendingThousand.toArray(), descendingThousand.toArray());	
+	}
+	@Test
+	void mergeSortTestPermuted() {
+		ArrayListSorter.mergesort(permutedHundred);
+		assertArrayEquals(ascendingHundred.toArray(), permutedHundred.toArray());
+		
+		ArrayListSorter.mergesort(permutedThousand);
+		assertArrayEquals(ascendingThousand.toArray(), permutedThousand.toArray());	
+	}
+	@Test
+	void quickSortTestPermuted() {
+		ArrayListSorter.quicksort(permutedHundred);
+		assertArrayEquals(ascendingHundred.toArray(), permutedHundred.toArray());
+		
+		ArrayListSorter.quicksort(permutedThousand);
+		assertArrayEquals(ascendingThousand.toArray(), permutedThousand.toArray());	
+	}
+	@Test
+	void mergeSortTestPermutedDup() {
+		ArrayListSorter.mergesort(permutedHundredAndTen52s);
+		assertArrayEquals(permutedHundredAndTen52sAnswer.toArray(), permutedHundredAndTen52s.toArray());
+		
+		ArrayListSorter.mergesort(permutedThousandAndTen52s);
+		assertArrayEquals(permutedThousandAndTen52sAnswer.toArray(), permutedThousandAndTen52s.toArray());	
+	}
+	@Test
+	void quickSortTestPermutedDup() {
+		ArrayListSorter.quicksort(permutedHundredAndTen52s);
+		assertArrayEquals(permutedHundredAndTen52sAnswer.toArray(), permutedHundredAndTen52s.toArray());
+		
+		ArrayListSorter.quicksort(permutedThousandAndTen52s);
+		assertArrayEquals(permutedThousandAndTen52sAnswer.toArray(), permutedThousandAndTen52s.toArray());	
+	}
+	
 	
 	//Test with Strings
+	void mergeSortTestDecendingString() {
+		ArrayListSorter.mergesort(descendingThousandString);
+		assertArrayEquals(ascendingThousandString.toArray(), descendingThousandString.toArray());	
+	}
 	@Test
-	void mergeSortTest1() {
-		ArrayListSorter.mergesort(intArray);
-		assertArrayEquals(intArraySorted.toArray(), intArray.toArray());
+	void quickSortTestDecendingString() {
+		ArrayListSorter.quicksort(descendingThousandString);
+		assertArrayEquals(ascendingThousandString.toArray(), descendingThousandString.toArray());	
 	}
 	
-	@Test
-	void quickSortTest1() {
-		ArrayListSorter.quicksort(intArray);
-		assertArrayEquals(intArraySorted.toArray(), intArray.toArray());
+	void mergeSortTestPermutedString() {
+		ArrayListSorter.mergesort(permutedThousandString);
+		assertArrayEquals(ascendingThousandString.toArray(), permutedThousandString.toArray());	
 	}
-
+	@Test
+	void quickSortTestPermutedString() {
+		ArrayListSorter.quicksort(permutedThousandString);
+		assertArrayEquals(ascendingThousandString.toArray(), permutedThousandString.toArray());	
+	}
 }
