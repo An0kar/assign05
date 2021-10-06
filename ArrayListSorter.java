@@ -1,6 +1,7 @@
 package assign05;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ArrayListSorter {
 	
@@ -75,20 +76,64 @@ public class ArrayListSorter {
 	}
 	
 	public static <T extends Comparable<? super T>> void quicksort(ArrayList<T> list) {
-		
+		quicksort(list, 0, list.size()-1);
 	}
 	
+	public static <T extends Comparable<? super T>> void quicksort(ArrayList<T> list, int startPoint, int endPoint) {
+	if(endPoint-startPoint<=1) 
+		return;
+	
+	int partition = partition(list, startPoint, endPoint);
+	
+	quicksort(list, startPoint, partition-1);
+	quicksort(list, partition+1, endPoint);
+	}
+
+	
+	
+	public static <T extends Comparable<? super T>> int partition(ArrayList<T> list, int startPoint, int endPoint){
+	    int pivot = endPoint; 
+	    int i = (startPoint - 1); 
+	  
+	    for(int j = startPoint; j <= endPoint; j++)
+	        if (list.get(j).compareTo(list.get(pivot))<0) {
+	            i++; 
+	            swap(list, i, j);
+	        }
+	    swap(list, i + 1, endPoint);
+	    return (i + 1);
+	}
+	
+	
+	public static <T extends Comparable<? super T>> void swap(ArrayList<T> list, int i, int j)
+	{
+	    T temp = list.get(i);
+	    list.set(i,list.get(j));
+	    list.set(j,temp);
+	}
+	
+	
 	public static ArrayList<Integer> generateAscending(int size) {
-		return null;
+		 ArrayList<Integer> intArray = new ArrayList();
+		 for(int i=1; i <= size; i++)
+			 intArray.add(i);
+		return intArray;
 		
 	}
 	
 	public static ArrayList<Integer> generatePermuted(int size){
-		return null;
+		 ArrayList<Integer> intArray = new ArrayList();
+		 for(int i=1; i <= size; i++)
+			 intArray.add(i);
+		 Collections.shuffle(intArray);
+		return intArray;
 	}
 	
 	public static ArrayList<Integer> generateDescending(int size) {
-		return null;
+		 ArrayList<Integer> intArray = new ArrayList();
+		 for(int i=size; i >=1 ; i--)
+			 intArray.add(i);
+		return intArray;
 		
 	}
 	
