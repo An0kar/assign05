@@ -2,10 +2,16 @@ package assign05;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
+
 
 public class ArrayListSorter {
 	
+	 
+	
 	protected static int INSERTION_THRESHOLD = 10;
+	
+	protected static int PIVOT_STRATEGY = 1;
 	
 	public static <T extends Comparable<? super T>> void mergesort(ArrayList<T> list) {
 		ArrayList<T> tempList = new ArrayList<T>();
@@ -76,42 +82,87 @@ public class ArrayListSorter {
 	}
 	
 	public static <T extends Comparable<? super T>> void quicksort(ArrayList<T> list) {
-		quicksort(list, 0, list.size()-1);
+		quicksort(list, 0, list.size());
 	}
 	
-	public static <T extends Comparable<? super T>> void quicksort(ArrayList<T> list, int startPoint, int endPoint) {
-	if(endPoint-startPoint<=1) 
+	private static <T extends Comparable<? super T>> void quicksort(ArrayList<T> list, int startPoint, int endPoint) {
+	if(endPoint - startPoint <= 1) 
 		return;
 	
 	int partition = partition(list, startPoint, endPoint);
-	
-	quicksort(list, startPoint, partition-1);
-	quicksort(list, partition+1, endPoint);
+	quicksort(list, startPoint, partition);
+	quicksort(list, partition + 1, endPoint);
 	}
 
 	
 	
-	public static <T extends Comparable<? super T>> int partition(ArrayList<T> list, int startPoint, int endPoint){
-	    int pivot = endPoint; 
-	    int i = (startPoint - 1); 
-	  
-	    for(int j = startPoint; j <= endPoint; j++)
-	        if (list.get(j).compareTo(list.get(pivot))<0) {
-	            i++; 
-	            swap(list, i, j);
-	        }
-	    swap(list, i + 1, endPoint);
-	    return (i + 1);
+	private static <T extends Comparable<? super T>> int partition(ArrayList<T> list, int startPoint, int endPoint){
+		
+		int pivot = choosePivot(list, startPoint, endPoint);
+		T temp = list.get(endPoint-1);
+		//move out of the way
+		list.set(endPoint-1, list.get(pivot));
+		list.set(pivot,  temp);
+		//
+		pivot = endPoint - 1;
+		
+		int leftIndex = startPoint;
+		int rightIndex = endPoint -2;
+		
+		while (leftIndex <= rightIndex) {
+			if(list.get(leftIndex).compareTo(list.get(pivot)) > 0 && list.get(rightIndex).compareTo(list.get(pivot)) <= 0) {
+				temp = list.get(rightIndex);
+				list.set(rightIndex, list.get(leftIndex));
+				list.set(leftIndex,  temp);
+				leftIndex++;
+				rightIndex--;
+			}
+			else {
+				if(list.get(leftIndex).compareTo(list.get(pivot)) > 0) {
+					rightIndex--;
+				}
+				else if(list.get(rightIndex).compareTo(list.get(pivot)) <= 0) {
+					leftIndex++;
+				}
+				else {
+					leftIndex++;
+					rightIndex--;
+				}
+			}
+			
+		}
+		temp = list.get(leftIndex);
+		list.set(leftIndex, list.get(pivot));
+		list.set(pivot,  temp);
+		
+		return leftIndex;
+	   
 	}
-	
-	
-	public static <T extends Comparable<? super T>> void swap(ArrayList<T> list, int i, int j)
-	{
-	    T temp = list.get(i);
-	    list.set(i,list.get(j));
-	    list.set(j,temp);
+
+	private static <T extends Comparable<? super T>> int choosePivot(ArrayList<T> list, int startPoint, int endPoint) {
+		
+		switch(PIVOT_STRATEGY) {
+		case 1:
+			
+		case 2: 
+			T front = list.get(startPoint);
+			T middle = list.get((startPoint + endPoint) / 2);
+			T back = list.get(endPoint - 2);
+			if((middle.compareTo(front) > 0 || middle.compareTo(back) > 0) && (middle.compareTo(front) <= 0 || middle.compareTo(back) <= 0)) {
+				return (startPoint + endPoint) / 2;
+			}
+			else if ((back.compareTo(middle) > 0 || back.compareTo(front) > 0) && (middle.compareTo(front) <= 0 || back.compareTo(middle) <= 0)) {
+				return endPoint - 2;
+			}
+			
+			return startPoint;
+		case 3: 
+			return (startPoint + endPoint) / 2;
+		}
+		
+		return -1;
+		
 	}
-	
 	
 	public static ArrayList<Integer> generateAscending(int size) {
 		 ArrayList<Integer> intArray = new ArrayList();
